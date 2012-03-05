@@ -1,0 +1,17 @@
+.tx_dragdrop_container {
+	min-height: 150px;
+}
+
+.tx_dragdrop_container .t3-page-ce-icons-move {
+	display: none;
+}
+
+.tx_dragdrop_container .t3-page-ce-header {
+	cursor: move;
+}
+
+.tx_dragdrop_notsupported .t3-page-ce-icons-move,
+.tx_dragdrop_notsupported .t3-page-ce-header {
+	cursor: default;
+	display: block;
+}
