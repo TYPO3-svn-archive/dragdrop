@@ -8,12 +8,13 @@ document.observe("dom:loaded", function() {
 	}
 
 	columnContainer.each(function(container){
-		if (container.id) {
+		if (container.id !== '' || container.hasClassName('t3-gridCell-unassigned')) {
 			return true;
 		}
 
 		var column = parseInt(container.className.replace(/.*t3-page-column-(\d*).*/gi, '$1'));
-		var dragdropContainer = new Element('div', {'class' : 'tx_dragdrop_container', 'id' : 'tx_dragdrop_container_' + column});
+		var dragdropContainer = new Element('div', {id: 'tx_dragdrop_container_' + column});
+		dragdropContainer.addClassName('tx_dragdrop_container');
 
 		container.insert(dragdropContainer);
 
@@ -25,7 +26,7 @@ document.observe("dom:loaded", function() {
 		}
 
 		contentElements.each(function(contentElement){
-			if (contentElement.getOffsetParent().id) {
+			if (contentElement.up(0).hasClassName('contentElement')) {
 					// multicolum extension is not supported
 				contentElement.addClassName('tx_dragdrop_notsupported');
 				return true;
@@ -35,6 +36,16 @@ document.observe("dom:loaded", function() {
 			if (t3Icon) {
 				var uid = parseInt(t3Icon.title.replace(/.*?id=(\d*).*/g, '$1'));
 				contentElement.id = 'tx_dragdrop_element_' + uid;
+
+				var h4 = contentElement.down('h4.t3-page-ce-header');
+				var rowHeader = h4.down('div.t3-row-header').cloneNode(true).setStyle({
+					position: 'absolute',
+					zIndex: 500
+				});
+				h4.observe('mousedown', function(){ $$('.tx_dragdrop_container').each(function(container){container.addClassName('highlight');}); });
+				h4.observe('mouseup', function(){ $$('.tx_dragdrop_container').each(function(container){container.removeClassName('highlight');}); });
+				h4.insert({before: rowHeader});
+
 				dragdropContainer.insert(contentElement);
 			}
 		});
@@ -44,7 +55,7 @@ document.observe("dom:loaded", function() {
 	tx_dragdrop_containers.each(function(tx_dragdrop_container){
 		Sortable.create(tx_dragdrop_container, {
 			tag: 'div',
-			handle: '.t3-page-ce-header',
+			handle: 't3-page-ce-header',
 			containment: tx_dragdrop_containers,
 			dropOnEmpty: true,
 			onUpdate: function(dragdropContainer) {
