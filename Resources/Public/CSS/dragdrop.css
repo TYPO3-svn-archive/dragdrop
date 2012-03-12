@@ -10,8 +10,26 @@
 	cursor: move;
 }
 
-.tx_dragdrop_notsupported .t3-page-ce-icons-move,
-.tx_dragdrop_notsupported .t3-page-ce-header {
+.tx_dragdrop_container .dragHandler {
+	position: absolute;
+	width: 100%;
+}
+
+.tx_dragdrop_container li.t3-page-ce {
+	padding: 1px 5px 5px;
+}
+
+.tx_dragdrop_container h4.t3-page-ce-header {
+	display: block !important;
+	visibility: visible !important;
+}
+
+.tx_dragdrop_container .inactive h4.t3-page-ce-header {
+	background: #cacaca;
+}
+
+.contentElement .t3-page-ce-icons-move,
+.contentElement .t3-page-ce-header {
 	cursor: default;
 	display: block;
 }

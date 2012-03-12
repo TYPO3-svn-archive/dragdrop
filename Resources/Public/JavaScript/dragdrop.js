@@ -8,13 +8,13 @@ document.observe("dom:loaded", function() {
 	}
 
 	columnContainer.each(function(container){
-		if (container.id) {
+		if (container.id !== '') {
 			return true;
 		}
 
 		var column = parseInt(container.className.replace(/.*t3-page-column-(\d*).*/gi, '$1'));
-		var dragdropContainer = new Element('div', {'class' : 'tx_dragdrop_container', 'id' : 'tx_dragdrop_container_' + column});
-
+		var dragdropContainer = new Element('ul', {id: 'tx_dragdrop_container_' + column});
+		dragdropContainer.addClassName('tx_dragdrop_container');
 		container.insert(dragdropContainer);
 
 		var contentElements = container.getElementsBySelector('div.t3-page-ce');
@@ -25,26 +25,43 @@ document.observe("dom:loaded", function() {
 		}
 
 		contentElements.each(function(contentElement){
-			if (contentElement.getOffsetParent().id) {
-					// multicolum extension is not supported
-				contentElement.addClassName('tx_dragdrop_notsupported');
-				return true;
-			}
+//			if (contentElement.up(0).hasClassName('contentElement')) {
+//					// multicolum extension is not supported
+//				return true;
+//			}
 
-			var t3Icon = contentElement.getElementsBySelector('.t3-page-ce-body a span.t3-icon')[0];
+			var t3Icon = contentElement.down('.t3-page-ce-body a span.t3-icon');
 			if (t3Icon) {
 				var uid = parseInt(t3Icon.title.replace(/.*?id=(\d*).*/g, '$1'));
 				contentElement.id = 'tx_dragdrop_element_' + uid;
-				dragdropContainer.insert(contentElement);
+
+				var li = new Element('li', {
+					id: contentElement.id
+				});
+				li.className = contentElement.className;
+				li.addClassName('inactive').update(contentElement.innerHTML);
+
+				li.observe('mouseover', function(){	this.addClassName('active').removeClassName('inactive'); });
+				li.observe('mouseout', function(){ this.removeClassName('active').addClassName('inactive'); });
+
+				var h4 = li.down('h4.t3-page-ce-header');
+				var rowHeader = h4.down('.t3-row-header');
+				rowHeader.setStyle({ position: 'absolute' });
+
+				h4.addClassName('t3-row-header');
+				h4.insert({before: rowHeader});
+
+				dragdropContainer.insert(li);
+				contentElement.remove();
 			}
 		});
 	});
 
-	var tx_dragdrop_containers = $$('div.tx_dragdrop_container');
+	var tx_dragdrop_containers = $$('.tx_dragdrop_container');
 	tx_dragdrop_containers.each(function(tx_dragdrop_container){
 		Sortable.create(tx_dragdrop_container, {
-			tag: 'div',
-			handle: '.t3-page-ce-header',
+			tag: 'li',
+			handle: 't3-page-ce-header',
 			containment: tx_dragdrop_containers,
 			dropOnEmpty: true,
 			onUpdate: function(dragdropContainer) {

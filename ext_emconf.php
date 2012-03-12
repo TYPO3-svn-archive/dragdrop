@@ -36,6 +36,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'conflicts' => array(
 			'templavoila' => '0.0.0-0.0.0',
+			'multicolumn' => '0.0.0-0.0.0',
+//			'gridelements' => '0.0.0-0.0.0',
 		),
 		'suggests' => array(
 		),
