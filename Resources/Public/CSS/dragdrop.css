@@ -1,5 +1,14 @@
 .tx_dragdrop_container {
-	min-height: 150px;
+	min-height: 30px;
+	padding-bottom: 20px;
+}
+
+.highlight {
+	background: url('/typo3conf/ext/dragdrop/Resources/Public/Images/drophere.gif') no-repeat left bottom;
+}
+
+.tx_dragdrop_container .t3-page-ce {
+	left: 0 !important;
 }
 
 .tx_dragdrop_container .t3-page-ce-icons-move {
