@@ -13,7 +13,8 @@ document.observe("dom:loaded", function() {
 		}
 
 		var column = parseInt(container.className.replace(/.*t3-page-column-(\d*).*/gi, '$1'));
-		var dragdropContainer = new Element('div', {class:'tx_dragdrop_container', id:'tx_dragdrop_container_' + column});
+		var dragdropContainer = new Element('div', {'class' : 'tx_dragdrop_container', 'id' : 'tx_dragdrop_container_' + column});
+
 		container.insert(dragdropContainer);
 
 		var contentElements = container.getElementsBySelector('div.t3-page-ce');
