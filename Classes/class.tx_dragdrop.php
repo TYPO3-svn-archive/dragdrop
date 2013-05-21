@@ -73,14 +73,17 @@ class tx_dragdrop {
 
 	/**
 	 * @param array $uidOrder
+	 * @return void
 	 */
 	public function setUidOrder($uidOrder = array()) {
 		$order = array();
-		foreach($uidOrder as $uid) {
-			$order[] = array(
-				'uid' => intval($uid),
-				'sorting' => NULL
-			);
+		if (is_array($uidOrder)) {
+			foreach ($uidOrder as $uid) {
+				$order[] = array(
+					'uid' => intval($uid),
+					'sorting' => NULL
+				);
+			}
 		}
 		$this->uidOrder = $order;
 	}
